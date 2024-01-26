@@ -17,10 +17,5 @@ serde_json = "1.0.111"
 thiserror = "1.0.56"
 tokio = { version = "1.35.1", features = ["full"] }
 tokio-tungstenite = "0.21.0"
+tracing = "0.1.40"
 
-
-[[examples]]
-name = "test_server"
-
-[[examples]]
-name = "test_bot"

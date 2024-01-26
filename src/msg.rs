@@ -39,3 +39,13 @@ impl TryFrom<SendMsg> for CQSendMsg {
         }
     }
 }
+
+impl SendMsg {
+    pub fn reply(recv: RecvMsg, content: String) -> Self {
+        Self {
+            content,
+            replay_id: Some(recv.from_id),
+            group_id: recv.group_id,
+        }
+    }
+}
