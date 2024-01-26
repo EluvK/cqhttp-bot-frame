@@ -64,12 +64,12 @@ async fn handle_msg_to_bot<CmdType: Parser + Send + Sync + 'static>(
         let mut cmds: Vec<&str> = raw_msg.split_whitespace().collect();
         cmds.insert(0, "");
         match CmdType::try_parse_from(cmds) {
-            Ok(cmd) => handler.handle_cmd(cmd).await,
+            Ok(cmd) => handler.handle_cmd(cmd, recv_msg).await,
             Err(e) => {
                 if handler.handler_wrong_cmd_manaully() {
                     handler.handle_msg(recv_msg).await
                 } else {
-                    Some(SendMsg::reply(recv_msg, e.render().to_string()))
+                    Some(recv_msg.reply(e.render().to_string()))
                 }
             }
         }
@@ -92,7 +92,7 @@ pub trait Handler {
         false
     }
     async fn handle_msg(&self, msg: RecvMsg) -> Option<SendMsg>;
-    async fn handle_cmd(&self, cmd: Self::Cmd) -> Option<SendMsg>;
+    async fn handle_cmd(&self, cmd: Self::Cmd, msg: RecvMsg) -> Option<SendMsg>;
     fn check_cmd_auth(&self, cmd: &Self::Cmd, ori_msg: &RecvMsg) -> bool;
 }
 

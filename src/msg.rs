@@ -8,6 +8,16 @@ pub struct RecvMsg {
     pub group_id: Option<u64>,
 }
 
+impl RecvMsg {
+    pub fn reply(&self, content: String) -> SendMsg {
+        SendMsg {
+            content,
+            replay_id: Some(self.from_id.clone()),
+            group_id: self.group_id,
+        }
+    }
+}
+
 // msg that handle reply
 #[derive(Debug)]
 pub struct SendMsg {
@@ -36,16 +46,6 @@ impl TryFrom<SendMsg> for CQSendMsg {
             }
             (None, Some(user_id)) => Ok(CQSendMsg::new_private_msg(user_id, value.content)),
             (None, None) => Err(anyhow::anyhow!("missing group id and user id")),
-        }
-    }
-}
-
-impl SendMsg {
-    pub fn reply(recv: RecvMsg, content: String) -> Self {
-        Self {
-            content,
-            replay_id: Some(recv.from_id),
-            group_id: recv.group_id,
         }
     }
 }

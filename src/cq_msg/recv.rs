@@ -43,7 +43,7 @@ pub struct CQPostMessageMsg {
     pub user_id: u64, // sender qq number
 
     // sub_type: Option<String>,
-    pub sender: Sender,
+    sender: Sender,
     pub message: String,
     pub raw_message: String,
     message_id: i64,
