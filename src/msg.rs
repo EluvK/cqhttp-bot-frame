@@ -40,7 +40,7 @@ impl TryFrom<SendMsg> for CQSendMsg {
     type Error = anyhow::Error;
 
     fn try_from(value: SendMsg) -> Result<Self, Self::Error> {
-        match (value.replay_id, value.group_id) {
+        match (value.group_id, value.replay_id) {
             (Some(group_id), user_id) => {
                 Ok(CQSendMsg::new_group_msg(group_id, user_id, value.content))
             }
